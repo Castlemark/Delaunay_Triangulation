@@ -62,7 +62,7 @@ void superTriangle(Mesh &mesh){
 	mesh.vertices.push_back(v1);
 	mesh.vertices.push_back(v2);
 	mesh.vertices.push_back(v3);
-	mesh.faces.push_back(Face{ mesh.vertices.size() - 3, mesh.vertices.size() - 2, mesh.vertices.size() - 1 });
+	mesh.faces.push_back(Face{ (float)mesh.vertices.size() - 3, mesh.vertices.size() - 2, mesh.vertices.size() - 1 });
 
 }
 
