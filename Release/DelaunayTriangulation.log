@@ -1,0 +1,16 @@
+﻿  Delaunay.cpp
+Delaunay.cpp(14): warning C4018: '<': no coinciden signed/unsigned
+Delaunay.cpp(22): warning C4018: '<': no coinciden signed/unsigned
+Delaunay.cpp(43): warning C4018: '<': no coinciden signed/unsigned
+Delaunay.cpp(58): warning C4838: la conversión de 'double' en 'float' requiere una conversión de restricción
+Delaunay.cpp(58): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+Delaunay.cpp(59): warning C4838: la conversión de 'double' en 'float' requiere una conversión de restricción
+Delaunay.cpp(59): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+Delaunay.cpp(60): warning C4838: la conversión de 'double' en 'float' requiere una conversión de restricción
+Delaunay.cpp(60): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+Delaunay.cpp(76): warning C4101: 'r': variable local sin referencia
+  Generando código
+  All 304 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+  DelaunayTriangulation.vcxproj -> C:\Users\Cristian\Dropbox\1. Educacion\3. Ingenieria Multimedia\3. Tercero\2. Semestre 2\Gràfics II\1. Abans de PC\1. Practica 1\proyecto0\Delaunay_Triangulation\Release\DelaunayTriangulation.exe
+  DelaunayTriangulation.vcxproj -> C:\Users\Cristian\Dropbox\1. Educacion\3. Ingenieria Multimedia\3. Tercero\2. Semestre 2\Gràfics II\1. Abans de PC\1. Practica 1\proyecto0\Delaunay_Triangulation\Release\DelaunayTriangulation.pdb (Full PDB)

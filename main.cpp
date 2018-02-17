@@ -7,7 +7,7 @@ int main(int argc, const char* argv[])
 	Mesh mesh;
 	std::cout << "Parsing input file. Please wait...\n";
 
-	if (!parsePoints("../input.txt", mesh.vertices))
+	if (!parsePoints("input.txt", mesh.vertices))
 	{
 		printf("ERROR! Could not parse input file\n");
 		return 0;

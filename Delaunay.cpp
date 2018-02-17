@@ -15,7 +15,7 @@ void triangulateMesh(Mesh &mesh){
 		//add vertex to the delaunay triangulation
 		addVertex(mesh, i);
 		//record progress
-		if (i % 100 == 0) std::cout << i << " of " << mesh.vertices.size() << " completed.\n";
+		if (i % 1 == 0) std::cout << i << " of " << mesh.vertices.size() << " completed.\n";
 	}
 
 	//remove any faces that were connected to the temporary super triangle
@@ -62,13 +62,62 @@ void superTriangle(Mesh &mesh){
 	mesh.vertices.push_back(v1);
 	mesh.vertices.push_back(v2);
 	mesh.vertices.push_back(v3);
-	mesh.faces.push_back(Face{ (float)mesh.vertices.size() - 3, mesh.vertices.size() - 2, mesh.vertices.size() - 1 });
+	mesh.faces.push_back(Face{ mesh.vertices.size() - 3, mesh.vertices.size() - 2, mesh.vertices.size() - 1 });
 
 }
 
 //Implement this function
 void addVertex(Mesh &mesh, const int vertexIndex){
+	Vertex vi = mesh.vertices[vertexIndex];
+	std::vector<Edge> edges_list;
+	// For triangle ti in triangle_list {
+	for (size_t i = 0; i < mesh.faces.size(); i++) {
+		// If vi is inside circumcircle of ti {
+		// Receives three vertices of a triangle(A, B, C) and returns true if point is inside the circumcircle of that triangle, otherwiser returns false
+		Face ti = mesh.faces[i];
+		if (isInsideCircumCircle(mesh.vertices[ti.a], mesh.vertices[ti.b], mesh.vertices[ti.c], vi)) {
+			// Save edges of ti to edges_list
+			Edge edge1;
+			edge1.v1 = ti.a;
+			edge1.v2 = ti.b;
+			Edge edge2;
+			edge2.v1 = ti.b;
+			edge2.v2 = ti.c;
+			Edge edge3;
+			edge3.v1 = ti.c;
+			edge3.v2 = ti.a;
+			edges_list.push_back(edge1);
+			edges_list.push_back(edge2);
+			edges_list.push_back(edge3);
+			// Delete triangle ti
+			mesh.faces.erase(mesh.faces.begin() + i);
+		}
+	}
 
+	// Remove duplicate edges in edges_list
+	for (size_t i = 0; i < edges_list.size(); i++) {
+		for (size_t j = i + 1; j < edges_list.size(); j++) {
+			Edge edge1 = edges_list[i];
+			Edge edge2 = edges_list[j];
+			if ((edge1.v1 == edge2.v1 && edge1.v2 == edge2.v2) || (edge1.v1 == edge2.v2 && edge1.v2 == edge2.v1)) {
+				edges_list.erase(edges_list.begin() + i);
+			}
+		}
+	}
+
+	// For edge ei in edges_list {
+	for (size_t i = 0; i < edges_list.size(); i++) {
+		Edge ei = edges_list[i];
+		// Create triangle which links vertices of ei with vi
+		Face face;
+		face.a = ei.v1;
+		face.b = ei.v2;
+		face.c = vertexIndex;
+		mesh.faces.push_back(face);
+	}
+
+	// Clear edges_list
+	edges_list.clear();
 }
 
 //returns true if Vertex 'point' is within the circumcircle of triangle ABV
