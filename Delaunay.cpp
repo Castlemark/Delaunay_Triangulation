@@ -96,11 +96,16 @@ void addVertex(Mesh &mesh, const int vertexIndex){
 
 	// Remove duplicate edges in edges_list
 	for (size_t i = 0; i < edges_list.size(); i++) {
+		Edge edge1 = edges_list[i];
+		bool deleted = false;
 		for (size_t j = i + 1; j < edges_list.size(); j++) {
-			Edge edge1 = edges_list[i];
 			Edge edge2 = edges_list[j];
 			if ((edge1.v1 == edge2.v1 && edge1.v2 == edge2.v2) || (edge1.v1 == edge2.v2 && edge1.v2 == edge2.v1)) {
-				edges_list.erase(edges_list.begin() + i);
+				edges_list.erase(edges_list.begin() + j);
+				if (!deleted) {
+					edges_list.erase(edges_list.begin() + i);
+					deleted = true;
+				}
 			}
 		}
 	}
