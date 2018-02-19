@@ -70,6 +70,9 @@ void superTriangle(Mesh &mesh){
 void addVertex(Mesh &mesh, const int vertexIndex){
 	Vertex vi = mesh.vertices[vertexIndex];
 	std::vector<Edge> edges_list;
+	std::vector<int> face_index;
+	std::vector<int> edge_index;
+
 	// For triangle ti in triangle_list {
 	for (size_t i = 0; i < mesh.faces.size(); i++) {
 		// If vi is inside circumcircle of ti {
@@ -80,34 +83,57 @@ void addVertex(Mesh &mesh, const int vertexIndex){
 			Edge edge1;
 			edge1.v1 = ti.a;
 			edge1.v2 = ti.b;
+
 			Edge edge2;
 			edge2.v1 = ti.b;
 			edge2.v2 = ti.c;
+
 			Edge edge3;
 			edge3.v1 = ti.c;
 			edge3.v2 = ti.a;
+
 			edges_list.push_back(edge1);
 			edges_list.push_back(edge2);
 			edges_list.push_back(edge3);
-			// Delete triangle ti
-			mesh.faces.erase(mesh.faces.begin() + i);
+
+			// Mark triangle ti for removal
+			face_index.push_back(i);
 		}
 	}
 
-	// Remove duplicate edges in edges_list
-	for (size_t i = 0; i < edges_list.size(); i++) {
+	// We remomve triangles that are marked for removal
+	for (size_t i = face_index.size(); i >= 1; i--)
+	{
+		mesh.faces.erase(mesh.faces.begin() + face_index[i - 1]);
+	}
+
+	// Mark duplicate edges in edges_list
+	for (size_t i = 0; i < edges_list.size() - 1; i++) {
+
 		Edge edge1 = edges_list[i];
 		bool deleted = false;
+
 		for (size_t j = i + 1; j < edges_list.size(); j++) {
+
 			Edge edge2 = edges_list[j];
+
 			if ((edge1.v1 == edge2.v1 && edge1.v2 == edge2.v2) || (edge1.v1 == edge2.v2 && edge1.v2 == edge2.v1)) {
+
 				edges_list.erase(edges_list.begin() + j);
-				if (!deleted) {
-					edges_list.erase(edges_list.begin() + i);
+
+				if (!deleted) {			
+
+					edge_index.push_back(i);
 					deleted = true;
 				}
 			}
 		}
+	}
+
+	// We remomve dupicate edges from edges_list
+	for (size_t i = edge_index.size(); i >= 1; i--)
+	{
+		edges_list.erase(edges_list.begin() + edge_index[i - 1]);
 	}
 
 	// For edge ei in edges_list {
