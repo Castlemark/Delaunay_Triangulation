@@ -70,8 +70,8 @@ void superTriangle(Mesh &mesh){
 void addVertex(Mesh &mesh, const int vertexIndex){
 	Vertex vi = mesh.vertices[vertexIndex];
 	std::vector<Edge> edges_list;
-	std::vector<int> face_index;
-	std::vector<int> edge_index;
+	std::vector<int> face_index;//indexs of duplicated faces (to delete them)
+	std::vector<int> edge_index;//indexs of duplicated edges (to delete them)
 
 	// For triangle ti in triangle_list {
 	for (size_t i = 0; i < mesh.faces.size(); i++) {
@@ -101,13 +101,12 @@ void addVertex(Mesh &mesh, const int vertexIndex){
 		}
 	}
 
-	// We remomve triangles that are marked for removal
-	for (size_t i = face_index.size(); i >= 1; i--)
-	{
+	// Remove triangles that are marked for removal
+	for (size_t i = face_index.size(); i >= 1; i--) {
 		mesh.faces.erase(mesh.faces.begin() + face_index[i - 1]);
 	}
 
-	// Mark duplicate edges in edges_list
+	// Mark duplicated edges in edges_list
 	for (size_t i = 0; i < edges_list.size() - 1; i++) {
 
 		Edge edge1 = edges_list[i];
@@ -117,22 +116,21 @@ void addVertex(Mesh &mesh, const int vertexIndex){
 
 			Edge edge2 = edges_list[j];
 
+			// Check if edges are equal
 			if ((edge1.v1 == edge2.v1 && edge1.v2 == edge2.v2) || (edge1.v1 == edge2.v2 && edge1.v2 == edge2.v1)) {
 
 				edges_list.erase(edges_list.begin() + j);
 
 				if (!deleted) {			
-
-					edge_index.push_back(i);
+					edge_index.push_back(i);// Mark the edge for removal
 					deleted = true;
 				}
 			}
 		}
 	}
 
-	// We remomve dupicate edges from edges_list
-	for (size_t i = edge_index.size(); i >= 1; i--)
-	{
+	// Remome duplicate edges (marked for removal) from edges_list
+	for (size_t i = edge_index.size(); i >= 1; i--) {
 		edges_list.erase(edges_list.begin() + edge_index[i - 1]);
 	}
 
